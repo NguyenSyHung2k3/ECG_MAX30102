@@ -12,9 +12,9 @@ byte z;
 byte lastx;
 byte lasty;
 long baseValue = 0;
-long lastMin = 105000;
+long lastMin = 107000;
 long lastMax= 103000;
-long rollingMin = 105000;
+long rollingMin = 107000;
 long rollingMax= 103000;
 
 const unsigned char Heart_Icon [] PROGMEM = {
@@ -23,7 +23,6 @@ const unsigned char Heart_Icon [] PROGMEM = {
 };
 
 #define Buzzer 18
-#define Button 25
 
 void setup() {
   Serial.begin(115200);
@@ -64,7 +63,7 @@ void setup() {
   delay(2000);
   oled.clearDisplay();
   pinMode(Buzzer, OUTPUT);
-  pinMode(Button, INPUT);
+
 }
 
 void loop() {
@@ -72,7 +71,7 @@ void loop() {
   long reading = particleSensor.getIR();
 
   if(reading > 100000){
-    // Display is only 128 pixels wide, so if we're add the end of the display, clear the display and start back over
+
     if(x>127)  
     {
       oled.clearDisplay();
@@ -85,7 +84,7 @@ void loop() {
       z = 0;
       lastMax = rollingMax;
       lastMin = rollingMin;
-      rollingMin = 105000;
+      rollingMin = 107000;
       rollingMax = 103000;
     }
   
@@ -98,7 +97,7 @@ void loop() {
     // Keep track of min/max IR readings to keep waveform centered
     if (reading > rollingMax){
       rollingMax = reading;
-      digitalWrite(Buzzer, LOW);
+
     }
 
     if (reading < rollingMin){
@@ -112,6 +111,7 @@ void loop() {
     oled.display();
     x++;
     z++;
+    digitalWrite(Buzzer, LOW);
 
   } else if(reading < 100000){
       oled.clearDisplay();
@@ -128,6 +128,5 @@ void loop() {
       x=0;
       lastx=x;
   }
-
   
 }
